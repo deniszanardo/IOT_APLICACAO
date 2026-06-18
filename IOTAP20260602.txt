@@ -28,5 +28,519 @@ void loop()
     delay(3000); // COMANDO DE TEMPO PARA O LED ACESO 3 SEG 
     digitalWrite(17, LOW); // COMANDO PARA DESLIGAR O LED VERMELHO 
     delay(1000); // COMANDO PARA DESLIGAR O LED 1 SEGUNDO 
-
 }
+
+#18/06/2026
+###################################################copiei a programação que estava no dontpad do grupo 
+
+
+//////////////////////// link material de aula ////////////////////////	
+
+
+https://drive.google.com/drive/folders/1yYghVKMmPy-JNH6BjFmBDbRnGr0jv2Bh?usp=sharing
+
+
+
+// AULA 1 - IOT - PISCA PISCA
+
+void setup()
+{
+    pinMode(2, OUTPUT); // CONFIGURAÇÃO DO PINO 2 C/ SAÍDA
+}
+
+void loop() 
+{
+    digitalWrite(2,HIGH); // COMANDO PARA LIGAR LED
+    delay(1000); // AGUARDAR 1S
+    digitalWrite(2, LOW); // COMANDO PARA DESLIGAR LED
+    delay(1000); // AGUARDAR 1S
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// AULA 1 - IOT - SEMÁFORO
+
+void setup()
+{
+    pinMode(2, OUTPUT); 
+    pinMode(4, OUTPUT);
+    pinMode(17, OUTPUT);
+}
+
+void loop() 
+{
+    digitalWrite(17,HIGH);
+    digitalWrite(4, LOW);
+    digitalWrite(2, LOW); 
+    delay(3000); 
+
+    digitalWrite(17,LOW);
+    digitalWrite(4, LOW);
+    digitalWrite(2, HIGH); 
+    delay(2000); 
+
+    digitalWrite(17,LOW);
+    digitalWrite(4, HIGH);
+    digitalWrite(2, LOW); 
+    delay(500); 
+}
+               
+
+////////////////////////////////////////////////////////////////////////////
+
+// AULA 2 - IOT - LEITURA DIGITAL
+
+void setup() 
+{
+  pinMode(4, INPUT);
+  pinMode(2, OUTPUT);
+}
+
+void loop() 
+{
+  int botao = digitalRead(4); // leitura do botão
+
+  if (botao == HIGH)
+  {
+    digitalWrite(2, HIGH);
+  }
+  else
+  {
+    digitalWrite(2, LOW);
+  }
+
+
+
+////////////////////////////////////////////////////////////////////////////
+// AULA 2 - EXERCÍCIO 2 - LEITURA ENTRADA ANALOGICA
+
+void setup() 
+{
+  Serial.begin(115200); // INICIALIZAÇÃO DO SERIAL MONITOR
+  pinMode(34, INPUT); // PINO 34 CONFIGURADO COMO ENTRADA
+}
+
+void loop() 
+{
+  int leitura = analogRead(34); // LEITURA DA PORTA 34
+  Serial.println(leitura); // ESCREVENDO A LEITURA NO SERIAL MONITOR
+  delay (100);
+}
+
+
+  
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// AULA 2 - EXERCÍCIO 3 - LEITURA ENTRADA ANALOGICA + CONVERSÃO
+
+void setup() 
+{
+  Serial.begin(115200); // INICIALIZAÇÃO DO SERIAL MONITOR
+  pinMode(34, INPUT); // PINO 34 CONFIGURADO COMO ENTRADA
+  pinMode(2, OUTPUT);
+}
+
+void loop() 
+{
+  int leitura = analogRead(34); // LEITURA DA PORTA 34
+  Serial.println(leitura); // ESCREVENDO A LEITURA NO SERIAL MONITOR
+
+  int temperatura = map(leitura,0,4095,0,100);
+  Serial.println(temperatura);
+
+
+
+  if(temperatura >= 80)
+  {
+    digitalWrite(2, HIGH);
+  }
+  else
+  {
+    digitalWrite(2, LOW);
+  }
+
+  delay(100);
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// AULA 2 - ATIVIDADE - LEITURA DE NÍVEL
+
+
+int potenciometro = 34;
+int botao_start = 26;
+int botao_stop = 27;
+int led_1 = 2;
+int led_2 = 0;
+int led_3 = 4;
+int led_4 = 16;
+int led_5 = 17;
+int led_on = 36;
+int contagem = 0;
+
+void setup() 
+{
+  Serial.begin(115200); // INICIALIZAÇÃO DO SERIAL MONITOR
+  pinMode(potenciometro, INPUT); // PINO 34 CONFIGURADO COMO ENTRADA
+  pinMode(led_1, OUTPUT);
+  pinMode(led_2, OUTPUT);
+  pinMode(led_3, OUTPUT);
+  pinMode(led_4, OUTPUT);
+  pinMode(led_5, OUTPUT);
+  pinMode(led_on, OUTPUT);
+  pinMode(botao_start, INPUT);
+  pinMode(botao_stop, INPUT);
+}
+
+void loop() 
+{
+  int leitura = analogRead(potenciometro); // LEITURA DA PORTA 34
+  int nivel = map(leitura,0,4095,0,5);
+  Serial.println(nivel);
+  Serial.println(contagem);
+
+  if(digitalRead(botao_start) == 1)
+  {
+    contagem = 1;
+  }
+ 
+   if(digitalRead(botao_stop) == 1)
+  {
+    contagem = 0;
+  }
+ 
+  if(contagem==1)
+  {
+    digitalWrite(led_on, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_on, LOW);
+  }
+  
+  if(nivel >= 1 && contagem==1)
+  {
+    digitalWrite(led_1, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_1, LOW);
+  }
+
+    if(nivel >= 2 && contagem==1)
+  {
+    digitalWrite(led_2, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_2, LOW);
+  }
+
+
+      if(nivel >= 3 && contagem==1)
+  {
+    digitalWrite(led_3, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_3, LOW);
+  }
+
+      if(nivel >= 4 && contagem==1)
+  {
+    digitalWrite(led_4, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_4, LOW);
+  }
+
+    if(nivel >= 5 && contagem==1)
+  {
+    digitalWrite(led_5, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_5, LOW);
+  }
+  delay(100);
+}
+
+
+
+
+/////////////////////////////////////////// AULA 3 - VISUALIZAÇÃO /////////////////////////////////////////// 
+
+#include <LiquidCrystal_I2C.h> 
+int potenciometro = 35;
+
+LiquidCrystal_I2C lcd(0x27, 16,2);
+
+
+void setup() 
+{
+  pinMode(potenciometro, INPUT);
+  LiquidCrystal_I2C lcd(0x27, 16,2);
+  lcd.init();
+  lcd.setBacklight(HIGH);
+
+  lcd.setCursor (3,0);
+  lcd.print ("Ola Mundo");
+  lcd.setCursor (2,1);
+  lcd.print ("LCD tutorial");
+  delay(3000);
+}
+
+void loop()
+{
+  LiquidCrystal_I2C lcd(0x27, 16,2);
+  lcd.setBacklight(HIGH);
+
+
+  int leitura_analogica = analogRead(potenciometro);
+  lcd.setCursor(4,0);
+  lcd.print("LEITURA");
+  lcd.setCursor(6,1);
+  lcd.print(leitura_analogica);
+  delay (1000);
+
+  lcd.clear();
+}
+
+// AULA 3 DESAFIO -//////////////////////////////////////////////////////
+
+// #include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include "DHT.h"
+
+// ======================
+// CONFIGURAÇÕES
+// ======================
+
+#define DHTPIN 4        // Pino do DHT22
+#define DHTTYPE DHT22   // Tipo do sensor
+
+// Endereço I2C do LCD
+// Geralmente 0x27 ou 0x3F
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+DHT dht(DHTPIN, DHTTYPE);
+
+// ======================
+// SETUP
+// ======================
+
+void setup()
+{
+    Serial.begin(115200);
+
+    dht.begin();
+    pinMode(16, OUTPUT);
+    lcd.init();
+    lcd.backlight();
+
+    lcd.setCursor(0, 0);
+    lcd.print("Iniciando...");
+    
+    delay(2000);
+
+    lcd.clear();
+}
+
+// ======================
+// LOOP
+// ======================
+
+void loop()
+{
+    // Leitura do sensor
+    float temperatura = dht.readTemperature();
+    float umidade = dht.readHumidity();
+
+    // Verifica erro na leitura
+    if (isnan(temperatura) || isnan(umidade))
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Erro no DHT22");
+
+        Serial.println("Falha na leitura do sensor!");
+
+        delay(2000);
+        return;
+    }
+
+    // Exibe no Serial Monitor
+    Serial.print("Temperatura: ");
+    Serial.print(temperatura);
+    Serial.println(" C");
+
+    Serial.print("Umidade: ");
+    Serial.print(umidade);
+    Serial.println(" %");
+
+    // Exibe no LCD
+    lcd.clear();
+
+    lcd.setCursor(0, 0);
+    lcd.print("Temp: ");
+    lcd.print(temperatura);
+    lcd.print((char)223); // símbolo °
+    lcd.print("C");
+
+    lcd.setCursor(0, 1);
+    lcd.print("Umid: ");
+    lcd.print(umidade);
+    lcd.print("%");
+
+    if (temperatura>=60 || umidade <= 20)
+    {
+      digitalWrite(16, HIGH);
+    }
+    else
+    {
+      digitalWrite(16,LOW);
+    }
+
+    delay(500);
+}
+
+/ AULA 4 - TRENA //////////////////////////////////////////////////////////////////////
+
+//#include <wire.h>
+#include <LCDI2C_Multilingual.h>
+/* 
+  Sketch generated by the Arduino IoT Cloud Thing "Untitled"
+  https://create.arduino.cc/cloud/things/f563afb7-54ac-496d-9463-9821e4befc00 
+
+  Arduino IoT Cloud Variables description
+
+  The following variables are automatically generated and updated when changes are made to the Thing
+
+  int Distancia;
+
+  Variables which are marked as READ/WRITE in the Cloud Thing will also have functions
+  which are called when their values are changed from the Dashboard.
+  These functions are generated with the Thing and added at the end of this sketch.
+*/
+
+
+// Endereço I2C mais comum: 0x27
+LCDI2C_Generic lcd(0x27, 16, 2);
+
+
+#include "thingProperties.h"
+#define TRIG_PIN 32 // emissor p
+#define ECHO_PIN 33 // receptor
+
+void setup() {
+  // Initialize serial and wait for port to open:
+  
+  Serial.begin(9600);
+   pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+lcd.init();
+  lcd.backlight();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Medidor Dist.");
+  delay(2000);
+  lcd.clear();
+  delay(1500); 
+
+  // Defined in thingProperties.h
+  initProperties();
+
+  // Connect to Arduino IoT Cloud
+  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+  
+  /*
+     The following function allows you to obtain more information
+     related to the state of network and IoT Cloud connection and errors
+     the higher number the more granular information you’ll get.
+     The default is 0 (only errors).
+     Maximum is 4
+ */
+  setDebugMessageLevel(2);
+  ArduinoCloud.printDebugInfo();
+}
+
+void loop() {
+  ArduinoCloud.update();
+    // Gera pulso de disparo
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  // Le tempo do eco
+  long duracao = pulseIn(ECHO_PIN, HIGH);
+
+  // Calcula distancia em cm
+  float distancia = duracao * 0.0343 / 2;
+
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("distancia:");
+
+  lcd.setCursor(0, 1);
+  lcd.print(distancia, 1);
+  lcd.print(" cm");
+  
+distancia = Distancia;
+  
+  delay(500); // quantidade de put/get
+}
+  
+  
+
+
+
+/*
+  Since Distancia is READ_WRITE variable, onDistanciaChange() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onDistanciaChange()  {
+  // Add your code here to act upon Distancia change
+}
+
+
+
+///////////////////// INICIO DAS CHAVES DO TRENA IOT ///////////////
+
+Trena_iot Created on June 18, 2026
+ESP32-WROOM-DA Module
+
+Client ID
+53ac545f-7df8-413c-b9b5-6c0cce5d602a
+Client Secret
+LNFm9dqmUa2rTcHn@Dnr5S1@u
+
+///////////////////// FIM DAS CHAVES DO TRENA IOT ///////////////
+
+
+
+///////////////////// INICIO DAS CHAVES DO POTENCIOMETRO COM DISPLAY  IOT ///////////////
+
+POTENCIOMETRO COM DISPLAY Created on June 18, 2026
+ESP32-WROOM-DA Module
+
+Client ID
+a49bbe18-bc2f-4c23-833b-38aad6141119
+Client Secret
+Q07@MFqxScLUi2gZJayqzgf0n
+
+///////////////////// FIM DAS CHAVES DO POTENCIOMETRO COM DISPLAY  IOT ///////////////
+
+
